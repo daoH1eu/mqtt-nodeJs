@@ -1,0 +1,26 @@
+/* Scroll 2 */
+.sc2::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+.sc2::-webkit-scrollbar-track {
+    background-color: white;
+    border-radius: 10px;
+}
+.sc2::-webkit-scrollbar-thumb {
+    background-color: silver;
+    border-radius: 10px;
+}
+
+table tbody {
+    display: block;
+    max-height: 300px;
+    overflow-y: scroll;
+}
+
+table thead, table tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
