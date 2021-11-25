@@ -4,7 +4,7 @@ Theo dõi cảm biến, điều khiển thiết bị
 ### 1. Giao diện Web (updating...)
 - Chỉnh sửa dựa trên: https://demos.creative-tim.com/soft-ui-dashboard/pages/dashboard.html?_ga=2.14654391.1834153662.1637824728-678885277.1635873874
 
-<img src="https://user-images.githubusercontent.com/84682521/143380416-6a88527e-3c77-4ba7-9d73-065af9b0f583.png" width="90%"></img> 
+<img src="https://user-images.githubusercontent.com/84682521/143495031-b6e457f5-4ae6-4304-8e32-312a88e47a61.png" width="90%"></img> 
 ### 2. Phần cứng
 - Esp01s giao tiếp uart Ardunio Mini
 - 10 relay điều khiển
