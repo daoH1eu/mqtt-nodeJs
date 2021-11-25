@@ -2,18 +2,19 @@ const express = require('express');
 const session = require('express-session');
 const path = require('path');
 const { con } = require('./database');
+const mqtt = require('mqtt');
 
 const app = express();
-const port = 6060;  
+const port = 6060;
 
 app.use(session({
-	secret: 'secret',
-	resave: true,
-	saveUninitialized: true
+    secret: 'secret',
+    resave: true,
+    saveUninitialized: true
 }));
 
 app.use(express.json());//parse data from body request
-app.use(express.urlencoded({extended: true }));
+app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static("public"));
 
@@ -21,9 +22,10 @@ app.engine('html', require('ejs').renderFile);//make the render engine accept ht
 app.set('view engine', 'html');
 app.set('views', path.join(__dirname, "/pages"));
 
-app.listen(port, function(){
+const server = app.listen(port, function () {
     console.log('Server started at: http://localhost:' + port);
 })
+const io = require('socket.io')(server);
 
 function checkAuth(req, res, next) {
     if (!req.session.loggedin) {
@@ -34,89 +36,190 @@ function checkAuth(req, res, next) {
     }
 }
 
-app.get('/', checkAuth, function(req,res){
+app.get('/', checkAuth, function (req, res) {
     res.redirect('/pages/dashboard.html');
 });
 
 //Route parameter
-app.get('/pages/:filename', checkAuth, function(req,res){
+app.get('/pages/:filename', checkAuth, function (req, res) {
     res.render(req.params.filename);
 });
 
-app.get('/log-in', function(req, res){
-    res.render("sign-in.html", {text : ""});
+app.get('/log-in', function (req, res) {
+    res.render("sign-in.html", { text: "" });
 });
 
 //handle form data
-app.post('/log-in', function(req,res){
+app.post('/log-in', function (req, res) {
     let username = req.body.username;
     let password = req.body.password;
-    let sqlQuery = "select * from accounts where username= '" + username + "' and passwords='" +password +"'";
-    con.query(sqlQuery, function(err, result, fields){
-        if(result.length > 0){
+    let sqlQuery = "select * from accounts where username= '" + username + "' and passwords='" + password + "'";
+    con.query(sqlQuery, function (err, result, fields) {
+        if (result.length > 0) {
             req.session.loggedin = true;
             res.redirect('/');
-        }else{
-            res.render("sign-in.html", {text : "Incorrect Username and/or Password!"});
+        } else {
+            res.render("sign-in.html", { text: "Incorrect Username and/or Password!" });
         }
         res.end();
     });
 });
 
-app.get('/log-out', function(req,res){
-    req.session.destroy( function(err){
-        if(err) throw err;
+app.get('/log-out', function (req, res) {
+    req.session.destroy(function (err) {
+        if (err) throw err;
         res.redirect('/');
     });
 });
 
+//------------------------------------MQTT Listener-----------------------------
+const host = "mqtt://broker.emqx.io:1883";
+const clientID = "mqtt-nodeJs-sv/" + Math.random().toString().slice(4, 10);
+const client = mqtt.connect(host, { clientID });
+const topic = ["home/sensor", "sensor/state"];
 
-// var data = {
-//     "Temper": {
-//         "value": 0,
-//         "time": ""
-//     },
-//     "Humi": {
-//         "value": 0,
-//         "time": ""
-//     },
-//     "Co2": {
-//         "value": 0,
-//         "time": ""
-//     },
-//     "Gas": {
-//         "value": 0,
-//         "time": ""
-//     },
-//     "Dust": {
-//         "value": 0,
-//         "time": ""
-//     }
-// };
-// socket.on("notifi_onclick", function () {
-//     //callback chain function ^^
-//     history_notifi_temper(function (value, time) {
-//         data.Temper.value = value;
-//         data.Temper.time = time;
-//         history_notifi_humi(function (value, time) {
-//             data.Humi.value = value;
-//             data.Humi.time = time;
-//             history_notifi_co2(function (value, time) {
-//                 data.Co2.value = value;
-//                 data.Co2.time = time;
-//                 history_notifi_gas(function (value, time) {
-//                     data.Gas.value = value;
-//                     data.Gas.time = time;
-//                     history_notifi_dust(function (value, time) {
-//                         data.Dust.value = value;
-//                         data.Dust.time = time;
-//                         socket.emit("update_notifi", data);
-//                     });
-//                 });
-//             });
-//         });
-//     });
-// });
+client.on("connect", function () {
+    console.log("MQTT connect: " + client.connected);
+    client.subscribe(topic, function () {
+        console.log("Subcribe to topic: " + topic);
+    });
+});
+
+var sensor_state = "";
+client.on("message", function (topic, message) {
+    console.log("topic is " + topic);
+    switch (topic) {
+        case "home/sensor":
+            let msg = JSON.parse(message);
+            let sqlQuery = "insert into sensors (Temper,Humi,Lux,Co2,Gas,Vibrant,Dust) values ('" + msg.Temper + "','" + msg.Humi + "','" + msg.Lux + "','" + msg.Co2 + "','" + msg.Gas + "','" + msg.Vibrant + "','" + msg.Dust + "');"
+            con.query(sqlQuery, function (err) {
+                if (err) throw err;
+                console.log("insert data sensor to table");
+            });
+            io.emit("sensor-data", message.toString());
+            break;
+        case "sensor/state":
+            sensor_state = message.toString();
+            io.emit("sensor-table", sensor_state);
+            break;
+        default:
+            break;
+    }
+});
+
+io.on("connection", function (socket) {
+    console.log("a user connected");
+    //sensor-table
+    socket.emit("sensor-table", sensor_state);
+
+    //sensor-value
+    var sqlQuery = "select * from sensors order by ID desc limit 1;"
+    con.query(sqlQuery, function (err, result) {//the result object is an array containing each row as an object.
+        if (err) throw err;
+        socket.emit("sensor-data", result[0]);
+    })
+
+    //lich su thong bao
+    var data = {
+        "Temper": {
+            "value": 0,
+            "time": ""
+        },
+        "Humi": {
+            "value": 0,
+            "time": ""
+        },
+        "Co2": {
+            "value": 0,
+            "time": ""
+        },
+        "Gas": {
+            "value": 0,
+            "time": ""
+        },
+        "Dust": {
+            "value": 0,
+            "time": ""
+        }
+    };
+    socket.on("notifi_onclick", function () {
+        //callback chain function @@
+        history_notifi_temper(function (value, time) {
+            data.Temper.value = value;
+            data.Temper.time = time;
+            history_notifi_humi(function (value, time) {
+                data.Humi.value = value;
+                data.Humi.time = time;
+                history_notifi_co2(function (value, time) {
+                    data.Co2.value = value;
+                    data.Co2.time = time;
+                    history_notifi_gas(function (value, time) {
+                        data.Gas.value = value;
+                        data.Gas.time = time;
+                        history_notifi_dust(function (value, time) {
+                            data.Dust.value = value;
+                            data.Dust.time = time;
+                            socket.emit("update_notifi", data);
+                        });
+                    });
+                });
+            });
+        });
+    });
+
+    //nhan gia tri nguong va luu vao database
+    socket.on("change-setting", function (data) {
+        let sqlQuery = "insert into settings(Temper, Humi ,Co2, Gas, Dust) values(" + data.Temper + "," + data.Humi + "," + data.Co2 + "," + data.Gas + "," + data.Dust + ") on duplicate key update Temper=values(Temper),Humi=values(Humi),Co2=values(Co2),Gas=values(Gas),Dust=values(Dust);"
+        con.query(sqlQuery, function (err) {
+            if (err) throw err;
+            console.log("Save setting to database");
+        })
+    });
+    //gui gia tri nguong tu database cho client
+    socket.on("dropdownSettingMenu_onlick", function () {
+        con.query("select * from settings", function (err, result) {
+            if (err) throw err;
+            socket.emit("update_setting", result[0]);
+        })
+    });
+});
+//function
+function history_notifi_temper(callback) {
+    con.query("select * from bulletin_board where Temper > '0' order by Time desc limit 1;", function (err, result) {
+        if (err) throw err;
+        callback(result[0].Temper, result[0].Time);
+    });
+};
+
+function history_notifi_humi(callback) {
+    con.query("select * from bulletin_board where Humi > '0' order by Time desc limit 1;", function (err, result) {
+        if (err) throw err;
+        callback(result[0].Humi, result[0].Time);
+    });
+};
+
+function history_notifi_co2(callback) {
+    con.query("select * from bulletin_board where Co2 > '0' order by Time desc limit 1;", function (err, result) {
+        if (err) throw err;
+        callback(result[0].Co2, result[0].Time);
+    });
+};
+
+function history_notifi_gas(callback) {
+    con.query("select * from bulletin_board where Gas > '0' order by Time desc limit 1;", function (err, result) {
+        if (err) throw err;
+        callback(result[0].Gas, result[0].Time);
+    });
+};
+
+function history_notifi_dust(callback) {
+    con.query("select * from bulletin_board where Dust > '0' order by Time desc limit 1;", function (err, result) {
+        if (err) throw err;
+        callback(result[0].Dust, result[0].Time);
+    });
+};
+
+
 
 // /*---------------lưu thời gian hẹn giờ vào database-------------------------------*/
 // socket.on("set_timer", function (data) {
@@ -181,40 +284,6 @@ app.get('/log-out', function(req,res){
 // }
 
 // /* -------------------------------------------------------------------- */
-// function history_notifi_temper(callback) {
-// con.query("select * from bulletin_board where Temper > '0' order by Time desc limit 1;", function (err, result) {
-//     if (err) throw err;
-//     callback(result[0].Temper, result[0].Time);
-// });
-// };
-
-// function history_notifi_humi(callback) {
-// con.query("select * from bulletin_board where Humi > '0' order by Time desc limit 1;", function (err, result) {
-//     if (err) throw err;
-//     callback(result[0].Humi, result[0].Time);
-// });
-// };
-
-// function history_notifi_co2(callback) {
-// con.query("select * from bulletin_board where Co2 > '0' order by Time desc limit 1;", function (err, result) {
-//     if (err) throw err;
-//     callback(result[0].Co2, result[0].Time);
-// });
-// };
-
-// function history_notifi_gas(callback) {
-// con.query("select * from bulletin_board where Gas > '0' order by Time desc limit 1;", function (err, result) {
-//     if (err) throw err;
-//     callback(result[0].Gas, result[0].Time);
-// });
-// };
-
-// function history_notifi_dust(callback) {
-// con.query("select * from bulletin_board where Dust > '0' order by Time desc limit 1;", function (err, result) {
-//     if (err) throw err;
-//     callback(result[0].Dust, result[0].Time);
-// });
-// };
 // /*------------------------- bật tắt, hẹn giờ các thiết bị ------------------------ */
 // function update_device_column(column_value, flag) {
 // switch (column_value) {

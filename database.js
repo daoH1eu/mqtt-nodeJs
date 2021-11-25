@@ -27,7 +27,7 @@ con.connect(function (err) {
         console.log("Sensors table is created");
     })
 
-    sqlQuery = "CREATE TABLE IF NOT EXISTS settings (ID int(10) not null primary key auto_increment, Time datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, Temper int(3) not null default '0', Humi int(3) not null default '0', Co2 int(3) not null default '0', Gas int(3) not null default '0',  Dust int(3) not null default '0');";
+    sqlQuery = "CREATE TABLE IF NOT EXISTS settings (ID int(2) default '0', Time datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, Temper int(3) not null default '0', Humi int(3) not null default '0', Co2 int(3) not null default '0', Gas int(3) not null default '0',  Dust int(3) not null default '0');";
     con.query(sqlQuery, function (err) {
         if (err) throw err;
         console.log("Settings table is created");
