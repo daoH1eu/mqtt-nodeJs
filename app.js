@@ -96,7 +96,21 @@ client.on("message", function (topic, message) {
                 if (err) throw err;
                 console.log("insert data sensor to table");
             });
-            io.emit("sensor-data", message.toString());
+            sqlQuery = "select * from sensors order by ID desc limit 1;"
+            con.query(sqlQuery, function (err, result) {//the result object is an array containing each row as an object.
+                if (err) throw err;
+                io.emit("sensor-data", result[0]);//hien thi gia tri cam bien
+                io.emit("show_toastr", result[0]);//hien thi thong bao nhung gia tri vuot nguong
+            });
+            //(display to chart)
+            sqlQuery = "select * from sensors order by ID desc limit 6;"
+            con.query(sqlQuery, function (err, result) {//the result object is an array containing each row as an object.
+                if (err) throw err;
+                io.emit("sensor-data-chart", result);
+            })
+            //moi lan server nhan dc gia tri cam bien, neu gia tri vuot nguong cai dat, thi luu lai vao datable (bulletin_table)
+            update_bulletin_table(msg);
+            console.log(message.toString());
             break;
         case "sensor/state":
             sensor_state = message.toString();
@@ -119,7 +133,14 @@ io.on("connection", function (socket) {
         socket.emit("sensor-data", result[0]);
     })
 
-    //lich su thong bao
+    //sensor-value (display to chart)
+    sqlQuery = "select * from sensors order by ID desc limit 6;"
+    con.query(sqlQuery, function (err, result) {//the result object is an array containing each row as an object.
+        if (err) throw err;
+        socket.emit("sensor-data-chart", result);
+    })
+
+    //hien thi lich su thong bao gui cho client
     var data = {
         "Temper": {
             "value": 0,
@@ -169,20 +190,47 @@ io.on("connection", function (socket) {
 
     //nhan gia tri nguong va luu vao database
     socket.on("change-setting", function (data) {
-        let sqlQuery = "insert into settings(Temper, Humi ,Co2, Gas, Dust) values(" + data.Temper + "," + data.Humi + "," + data.Co2 + "," + data.Gas + "," + data.Dust + ") on duplicate key update Temper=values(Temper),Humi=values(Humi),Co2=values(Co2),Gas=values(Gas),Dust=values(Dust);"
+        var sqlQuery = "insert into settings(Temper, Humi ,Co2, Gas, Dust) values(" + data.Temper + "," + data.Humi + "," + data.Co2 + "," + data.Gas + "," + data.Dust + ") on duplicate key update Temper=values(Temper),Humi=values(Humi),Co2=values(Co2),Gas=values(Gas),Dust=values(Dust);"
         con.query(sqlQuery, function (err) {
             if (err) throw err;
             console.log("Save setting to database");
-        })
+        });
     });
-    //gui gia tri nguong tu database cho client
-    socket.on("dropdownSettingMenu_onlick", function () {
+
+    //gui gia tri nguong tu database cho client (de hien thi-thong bao)
+    socket.on("dropdownSettingMenu_onlick", function () {//update onclick
         con.query("select * from settings", function (err, result) {
             if (err) throw err;
             socket.emit("update_setting", result[0]);
         })
     });
+    con.query("select * from settings", function (err, result) {//update onload
+        if (err) throw err;
+        socket.emit("update_setting", result[0]);
+    });
+
+    //on/off notification
+    sqlQuery = "select * from bulletin_board where Mode != 'null' order by Time desc limit 1;"
+    con.query(sqlQuery, function (err, result) {
+        if (err) throw err;
+        socket.emit("notifi_mode", result[0].Mode);//**Note: how to send notifi mode to all client ? 
+    });
+    socket.on("turnOn_notifi", function () {
+        sqlQuery = "insert into bulletin_board (Mode) values('on');"
+        con.query(sqlQuery, function (err) {
+            if (err) throw err;
+            socket.emit("notifi_mode", "on");
+        });
+    });
+    socket.on("turnOff_notifi", function () {
+        sqlQuery = "insert into bulletin_board (Mode) values('off');"
+        con.query(sqlQuery, function (err) {
+            if (err) throw err;
+            socket.emit("notifi_mode", "off");
+        });
+    });
 });
+
 //function
 function history_notifi_temper(callback) {
     con.query("select * from bulletin_board where Temper > '0' order by Time desc limit 1;", function (err, result) {
@@ -219,7 +267,46 @@ function history_notifi_dust(callback) {
     });
 };
 
-
+//moi lan server nhan dc gia tri cam bien, neu gia tri vuot nguong cai dat, thi luu lai vao datable (bulletin_table)
+function update_bulletin_table(data) {
+    //table setting co 1 dong duy nhat
+    con.query("select * from settings", function (err, result) {//update onload
+        if (err) throw err;
+        //gia tri nguong cai dat truoc do
+        var setting_list = { "Temper": result[0].Temper, "Humi": result[0].Humi, "Co2": result[0].Co2, "Gas": result[0].Gas, "Dust": result[0].Dust };
+        //gia tri cam bien moi neu vuot nguong
+        var overload_list = { "Temper": 0, "Humi": 0, "Co2": 0, "Gas": 0, "Dust": 0 };
+        var flag = false;
+        if (data.Temper >= setting_list.Temper) {
+            overload_list.Temper = data.Temper;
+            flag = true;
+        }
+        if (data.Humi >= setting_list.Humi) {
+            overload_list.Humi = data.Humi;
+            flag = true;
+        }
+        if (data.Co2 >= setting_list.Co2) {
+            overload_list.Co2 = data.Co2;
+            flag = true;
+        }
+        if (data.Gas >= setting_list.Gas) {
+            overload_list.Gas = data.Gas;
+            flag = true;
+        }
+        if (data.Dust >= setting_list.Dust) {
+            overload_list.Dust = data.Dust;
+            flag = true;
+        }
+        if (flag) {
+            //luu gia tri vuot nguong vao database
+            var sqlQuery = "insert into bulletin_board (Temper, Humi, Co2, Gas, Dust) values (" + overload_list.Temper + "," + overload_list.Humi + "," + overload_list.Co2 + "," + overload_list.Gas + "," + overload_list.Dust + ");"
+            con.query(sqlQuery, function (err) {
+                if (err) throw err;
+                console.log("insert overload value to bulletin table");
+            });
+        }
+    });
+}
 
 // /*---------------lưu thời gian hẹn giờ vào database-------------------------------*/
 // socket.on("set_timer", function (data) {

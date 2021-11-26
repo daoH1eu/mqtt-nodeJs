@@ -24,17 +24,17 @@ transform: scale(1.1);
 	/* minFontSize + (maxFontSize - minFontSize) * (100vw - minVWidth)/(maxVWidth - minVWidth) */
 	/* font-size: calc(64px + (80 - 64) * (100vw - 320px)/(960 - 320));
 } */
- input {
+ .dropdownSettingMenu input {
 	font-size: 1.35em;
 	line-height: 1.5;
 }
 /* body {
 	background: #bbb;
 } */
-input {
+/* .dropdownSettingMenu input {
 	display: block;
 	margin-bottom: 1.5em;
-}
+} */
 /* main {
 	padding: 1.5em 0 0 0;
 	text-align: center;	

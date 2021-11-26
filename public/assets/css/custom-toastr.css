@@ -1,0 +1,26 @@
+/*./ refers to the current folder, ../ refers to the parent directory*/
+#toast-container>.customer-temper {
+    background-image: url("../../image/temperature.png") !important;
+    background-color: dodgerblue;
+    padding-left: 60px;
+  }
+#toast-container>.customer-humi {
+    background-image: url("../../image/humidity.png") !important;
+    background-color: dodgerblue;
+    padding-left: 60px;
+}
+#toast-container>.customer-co2 {
+    background-image: url("../../image/co2.png") !important;
+    background-color: dodgerblue;
+    padding-left: 60px;
+}
+#toast-container>.customer-gas {
+    background-image: url("../../image/gas.png") !important;
+    background-color: dodgerblue;
+    padding-left: 60px;
+}
+#toast-container>.customer-dust {
+    background-image: url("../../image/dust.png") !important;
+    background-color: dodgerblue;
+    padding-left: 60px;
+}

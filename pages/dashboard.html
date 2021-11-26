@@ -39,6 +39,11 @@
   <!-- Scroll Bar -->
   <link href="../assets/css/customScrollbar.css" rel="stylesheet" />
   <link href="../assets/css//noScroll.css" rel="stylesheet" />
+  <!-- toastr -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.css" rel="stylesheet" />
+  <link href="../assets/css/custom-toastr.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
 </head>
 
 <body class="g-sidenav-show  bg-gray-100">
@@ -135,6 +140,15 @@
             </a>
           </div>
           <ul class="navbar-nav  justify-content-end">
+            <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+              <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
+                <div class="sidenav-toggler-inner">
+                  <i class="sidenav-toggler-line"></i>
+                  <i class="sidenav-toggler-line"></i>
+                  <i class="sidenav-toggler-line"></i>
+                </div>
+              </a>
+            </li>
             <li class="nav-item dropdown pe-2 ps-3 d-flex align-items-center">
               <a href="javascript:;" class="nav-link text-body p-0 font-weight-bold" data-bs-toggle="dropdown"
                 id="dropdownSettingBtn">
@@ -147,21 +161,21 @@
                 <li class="dropdown-item border-radius-md">
                   <form id="dropdownSettingMenu">
                     <h6 class="text-sm font-weight-bold">Nhiệt độ</h6>
-                    <input class="form-control form-control-sm" type="number" onfocus="this.value=''"
+                    <input class="form-control form-control-sm mb-2" type="number" onfocus="this.value=''"
                       placeholder="đặt ngưỡng" id="max-temper">
                     <h6 class="text-sm font-weight-bold">Độ ẩm</h6>
-                    <input class="form-control form-control-sm" type="number" onfocus="this.value=''"
+                    <input class="form-control form-control-sm mb-2" type="number" onfocus="this.value=''"
                       placeholder="đặt ngưỡng" id="max-humi">
                     <h6 class="text-sm font-weight-bold">Co2</h6>
-                    <input class="form-control form-control-sm" type="number" onfocus="this.value=''"
+                    <input class="form-control form-control-sm mb-2" type="number" onfocus="this.value=''"
                       placeholder="đặt ngưỡng" id="max-co2">
                     <h6 class="text-sm font-weight-bold">Gas</h6>
-                    <input class="form-control form-control-sm" type="number" onfocus="this.value=''"
+                    <input class="form-control form-control-sm mb-2" type="number" onfocus="this.value=''"
                       placeholder="đặt ngưỡng" id="max-gas">
                     <h6 class="text-sm font-weight-bold">Dust</h6>
-                    <input class="form-control form-control-sm" type="number" onfocus="this.value=''"
+                    <input class="form-control form-control-sm mb-2" type="number" onfocus="this.value=''"
                       placeholder="đặt ngưỡng" id="max-dust">
-                    <button type="button" class="btn btn-sm bg-gradient-success ms-2" id="setting_btn">Accept</button>
+                    <button type="button" class="btn btn-sm bg-gradient-success mt-2 ms-2" id="setting_btn">Accept</button>
                   </form>
                 </li>
               </ul>
@@ -656,11 +670,12 @@
   <script>
     const socket = io();
 
-    //notifi button
+    //notifi button (on/off notifi)      
+    var mode = document.getElementById("secure-mode");
+    var icon = document.getElementById("mode-icon");
+    var color = document.getElementById("mode-color");
     function changeMode() {//bg-gradient-success
-      var mode = document.getElementById("secure-mode");
-      var icon = document.getElementById("mode-icon");
-      var color = document.getElementById("mode-color");
+
       if (mode.innerHTML == "ON") {
         mode.innerHTML = "OFF";
         mode.style.color = "#CD212A";
@@ -669,6 +684,7 @@
         color.classList.remove("bg-gradient-success");
         icon.classList.remove("bi-shield-check");
         icon.classList.add("bi-shield-exclamation");
+        socket.emit("turnOff_notifi", "trigger");
       }
       else {
         mode.innerHTML = "ON";
@@ -676,48 +692,30 @@
         color.classList.add("bg-gradient-success");
         icon.classList.remove("bi-shield-exclamation");
         icon.classList.add("bi-shield-check");
+        socket.emit("turnOn_notifi", "trigger");
       }
     }
     document.getElementById("notifi-mode").addEventListener("click", changeMode);
-
-    //show lịch sử thông báo
-    var history_temper_value = document.getElementById("temper_history");
-    var history_temper_time = document.getElementById("temper_history_time");
-
-    var history_humi_value = document.getElementById("humi_history");
-    var history_humi_time = document.getElementById("humi_history_time");
-
-    var history_co2_value = document.getElementById("co2_history");
-    var history_co2_time = document.getElementById("co2_history_time");
-
-    var history_gas_value = document.getElementById("gas_history");
-    var history_gas_time = document.getElementById("gas_history_time");
-
-    var history_dust_value = document.getElementById("dust_history");
-    var history_dust_time = document.getElementById("dust_history_time");
-
-    //cap nhat gia tri dropdown notifi menu
-    document.getElementById("dropdownNotifiButton").addEventListener("click", function () {
-      socket.emit("notifi_onclick", "trigger");
-    });
-    socket.on("update_notifi", function (data) {
-      history_temper_value.innerHTML = data.Temper.value + '<span class="text-success text-sm font-weight-bolder ps-1">&degC</span>';
-      history_temper_time.innerHTML = data.Temper.time;
-
-      history_humi_value.innerHTML = data.Humi.value + '<span class="text-success text-sm font-weight-bolder ps-1">%</span>';
-      history_humi_time.innerHTML = data.Humi.time;
-
-      history_co2_value.innerHTML = data.Co2.value + '<span class="text-success text-sm font-weight-bolder ps-1">PPM</span>';
-      history_co2_time.innerHTML = data.Co2.time;
-
-      history_gas_value.innerHTML = data.Gas.value + '<span class="text-success text-sm font-weight-bolder ps-1">PPM</span>';
-      history_gas_time.innerHTML = data.Gas.time;
-
-      history_dust_value.innerHTML = data.Dust.value + '<span class="text-success text-sm font-weight-bolder ps-1">ug/m3</span>';
-      history_dust_time.innerHTML = data.Dust.time;
+    socket.on("notifi_mode", function (data) {
+      if (data == "on") {
+        mode.innerHTML = "ON";
+        mode.classList.add("text-success");
+        color.classList.add("bg-gradient-success");
+        icon.classList.remove("bi-shield-exclamation");
+        icon.classList.add("bi-shield-check");
+      }
+      else {
+        mode.innerHTML = "OFF";
+        mode.style.color = "#CD212A";
+        color.style.backgroundColor = "#CD212A";
+        mode.classList.remove("text-success");
+        color.classList.remove("bg-gradient-success");
+        icon.classList.remove("bi-shield-check");
+        icon.classList.add("bi-shield-exclamation");
+      }
     });
 
-    //sensor table
+    //sensor table, trang thai cua cam bien
     var temperature = document.getElementById("temperature-sensor");
     var humidity = document.getElementById("humidity-sensor");
     var co2 = document.getElementById("co2-sensor");
@@ -770,7 +768,7 @@
       }
     });
 
-    //sensor value
+    //sensor value, hien thi gia tri cam bien
     var temper_value = document.getElementById("temper-value");
     var humi_value = document.getElementById("humi-value");
     var co2_value = document.getElementById("co2-value");
@@ -779,6 +777,7 @@
     var lux_value = document.getElementById("lux-value");
     var dust_value = document.getElementById("dust-value");
     socket.on("sensor-data", function (data) {
+      console.log(data);
       temper_value.innerHTML = data.Temper + '<span class="text-success text-sm font-weight-bolder ps-2">&degC</span>';
       humi_value.innerHTML = data.Humi + '<span class="text-success text-sm font-weight-bolder ps-2">%</span>';
       co2_value.innerHTML = data.Co2 + '<span class="text-success text-sm font-weight-bolder ps-2">PPM</span>';
@@ -786,6 +785,64 @@
       vibrant_value.innerHTML = data.Vibrant + '<span class="text-success text-sm font-weight-bolder ps-2">%</span>';
       lux_value.innerHTML = data.Lux + '<span class="text-success text-sm font-weight-bolder ps-2">LUX</span>';
       dust_value.innerHTML = data.Dust + '<span class="text-success text-sm font-weight-bolder ps-2">ug/m3</span>';
+    });
+  </script>
+
+  <!-- module xu ly thong bao va cai dat nguong -->
+  <script>
+    //toastr init
+    toastr.options = {
+      "closeButton": true,
+      "debug": true,
+      "newestOnTop": true,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "5000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+    //show lịch sử thông báo, dropdown notifi menu
+    var history_temper_value = document.getElementById("temper_history");
+    var history_temper_time = document.getElementById("temper_history_time");
+
+    var history_humi_value = document.getElementById("humi_history");
+    var history_humi_time = document.getElementById("humi_history_time");
+
+    var history_co2_value = document.getElementById("co2_history");
+    var history_co2_time = document.getElementById("co2_history_time");
+
+    var history_gas_value = document.getElementById("gas_history");
+    var history_gas_time = document.getElementById("gas_history_time");
+
+    var history_dust_value = document.getElementById("dust_history");
+    var history_dust_time = document.getElementById("dust_history_time");
+
+    //cap nhat gia tri dropdown notifi menu
+    document.getElementById("dropdownNotifiButton").addEventListener("click", function () {
+      socket.emit("notifi_onclick", "trigger");
+    });
+    socket.on("update_notifi", function (data) {
+      history_temper_value.innerHTML = data.Temper.value + '<span class="text-success text-sm font-weight-bolder ps-1">&degC</span>';
+      history_temper_time.innerHTML = data.Temper.time;
+
+      history_humi_value.innerHTML = data.Humi.value + '<span class="text-success text-sm font-weight-bolder ps-1">%</span>';
+      history_humi_time.innerHTML = data.Humi.time;
+
+      history_co2_value.innerHTML = data.Co2.value + '<span class="text-success text-sm font-weight-bolder ps-1">PPM</span>';
+      history_co2_time.innerHTML = data.Co2.time;
+
+      history_gas_value.innerHTML = data.Gas.value + '<span class="text-success text-sm font-weight-bolder ps-1">PPM</span>';
+      history_gas_time.innerHTML = data.Gas.time;
+
+      history_dust_value.innerHTML = data.Dust.value + '<span class="text-success text-sm font-weight-bolder ps-1">ug/m3</span>';
+      history_dust_time.innerHTML = data.Dust.time;
     });
 
     //--------------xử lý giá trị đặt ngưỡng--------------------------------
@@ -796,7 +853,7 @@
     //cap nhat gia tri setting menu
     var setting_btn_dropdown = document.getElementById("dropdownSettingBtn");
     setting_btn_dropdown.addEventListener("click", function () {
-      socket.emit("dropdownSettingMenu_onlick","trigger");
+      socket.emit("dropdownSettingMenu_onlick", "trigger");
     });
 
     socket.on("update_setting", function (data) {
@@ -817,7 +874,7 @@
     var submit_btn = document.getElementById("setting_btn");
     submit_btn.addEventListener("click", function () {
       if (setting_menu.namedItem("max-temper").value > 0)
-        //nếu thỏa mãn thì update vào list
+        //nếu giá trị cài ngưỡng mới thỏa mãn đk thì update vào list
         setting_list.Temper = setting_menu.namedItem("max-temper").value;
 
       if (setting_menu.namedItem("max-humi").value > 0)
@@ -833,6 +890,38 @@
         setting_list.Dust = setting_menu.namedItem("max-dust").value;
 
       socket.emit("change-setting", setting_list);
+    });
+
+    //hiển thị thông báo khi vượt ngưỡng cài đặt, mỗi lần server nhận đc dữ liệu mới từ cảm biến
+    var notification = false;
+    socket.on("notifi_mode", function (data) {
+      console.log(data);
+      if (data == "on")
+        notification = true;
+      else
+        notification = false;
+    });
+
+    //dam bao sau khi mode variable da dc load
+    $(document).ready(function () {
+      socket.on("show_toastr", function (data) {
+        if (notification) {
+          if (data.Temper >= setting_list.Temper)
+            toastr["success"](data.Temper + ' °C', "Nhiệt độ", { "iconClass": 'customer-temper' });
+
+          if (data.Humi >= setting_list.Humi)
+            toastr["success"](data.Humi + ' %', "Độ ẩm", { "iconClass": 'customer-humi' });
+
+          if (data.Co2 >= setting_list.Co2)
+            toastr["success"](data.Co2 + ' PPM', "Co2", { "iconClass": 'customer-co2' });
+
+          if (data.Gas >= setting_list.Gas)
+            toastr["success"](data.Gas + ' PPM', "Gas", { "iconClass": 'customer-gas' });
+
+          if (data.Dust >= setting_list.Dust)
+            toastr["success"](data.Dust + ' ug/m3', "Dust", { "iconClass": 'customer-dust' });
+        }
+      });
     });
   </script>
 </body>
