@@ -96,6 +96,7 @@ client.on("message", function (topic, message) {
                 if (err) throw err;
                 console.log("insert data sensor to table");
             });
+            //display sensor value (overview page)
             sqlQuery = "select * from sensors order by ID desc limit 1;"
             con.query(sqlQuery, function (err, result) {//the result object is an array containing each row as an object.
                 if (err) throw err;
@@ -107,6 +108,12 @@ client.on("message", function (topic, message) {
             con.query(sqlQuery, function (err, result) {//the result object is an array containing each row as an object.
                 if (err) throw err;
                 io.emit("sensor-data-chart", result);
+            })
+            //sensor-value (display to history table)
+            sqlQuery = "select * from sensors order by ID desc limit 400;"
+            con.query(sqlQuery, function (err, result) {//the result object is an array containing each row as an object.
+                if (err) throw err;
+                io.emit("sensor-data-table", result);
             })
             //moi lan server nhan dc gia tri cam bien, neu gia tri vuot nguong cai dat, thi luu lai vao datable (bulletin_table)
             update_bulletin_table(msg);
@@ -138,6 +145,13 @@ io.on("connection", function (socket) {
     con.query(sqlQuery, function (err, result) {//the result object is an array containing each row as an object.
         if (err) throw err;
         socket.emit("sensor-data-chart", result);
+    })
+
+    //sensor-value (display to history table)
+    sqlQuery = "select * from sensors order by ID desc limit 400;"
+    con.query(sqlQuery, function (err, result) {//the result object is an array containing each row as an object.
+        if (err) throw err;
+        socket.emit("sensor-data-table", result);
     })
 
     //hien thi lich su thong bao gui cho client
