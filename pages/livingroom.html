@@ -284,44 +284,48 @@
         <!-- End Navbar -->
         <div class="container-fluid py-4">
             <div class="row mt-3">
-                <div class="col-lg bg-gradient-success mb-3">
+                <div class="col-lg mb-3">
                     <!-- h-100 : height = 100% column -->
-                    <div class="card h-100 border border-primary">
-                        <img src="../image/no-signal.png" class="img-fluid pt-3">
-                        <div class="card-body">
+                    <div class="card h-100 border border-primary px-3 py-3">
+                        <img src="../image/no-signal.png" class="img-fluid">
+                        <div class="card-body mt-3">
                             <h5 class="card-title text-center">Camera 1</h5>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg bg-gradient-info mb-3">
+                <div class="col-lg mb-3">
                     <div class="card py-2 px-2 border border-primary">
                         <h5 class="card-title text-center mt-2">Điều Khiển</h5>
                         <div class="card-group mt-2 mb-3">
-                            <div class="card zoom bg-light mx-2  rounded-3 d-flex align-items-center">
+                            <div class="card zoom bg-light mx-2 cursor-pointer rounded-3 d-flex align-items-center"
+                                id="device1_btn">
                                 <h6 class="font-weight-bolder text-center pt-3">Device 1</h6>
                                 <label class="switch">
-                                    <input type="checkbox">
+                                    <input type="checkbox" id="device1_check">
                                     <span class="slider round"></span>
                                 </label>
                             </div>
-                            <div class="card zoom bg-light mx-2  rounded-3 d-flex align-items-center">
+                            <div class="card zoom bg-light mx-2 cursor-pointer rounded-3 d-flex align-items-center"
+                                id="device2_btn">
                                 <h6 class="font-weight-bolder text-center pt-3">Device 2</h6>
                                 <label class="switch">
-                                    <input type="checkbox">
+                                    <input type="checkbox" id="device2_check">
                                     <span class="slider round"></span>
                                 </label>
                             </div>
-                            <div class="card zoom bg-light mx-2  rounded-3 d-flex align-items-center">
+                            <div class="card zoom bg-light mx-2 cursor-pointer rounded-3 d-flex align-items-center"
+                                id="device3_btn">
                                 <h6 class="font-weight-bolder text-center pt-3">Device 3</h6>
                                 <label class="switch">
-                                    <input type="checkbox">
+                                    <input type="checkbox" id="device3_check">
                                     <span class="slider round"></span>
                                 </label>
                             </div>
-                            <div class="card zoom bg-light mx-2  rounded-3 d-flex align-items-center">
+                            <div class="card zoom bg-light mx-2 cursor-pointer rounded-3 d-flex align-items-center"
+                                id="device4_btn">
                                 <h6 class="font-weight-bolder text-center pt-3">Device 4</h6>
                                 <label class="switch">
-                                    <input type="checkbox">
+                                    <input type="checkbox" id="device4_check">
                                     <span class="slider round"></span>
                                 </label>
                             </div>
@@ -329,61 +333,81 @@
                     </div>
                     <div class="card mt-3 py-2 px-3 border border-primary">
                         <h5 class="card-title text-center mt-2">Hẹn Giờ</h5>
-                        <div class="input-group my-2">
-                            <input type="checkbox" disabled class="align-self-center me-2">
-                            <input class="form-control border-start border-end text-center" placeholder="Hẹn ngày bật"
-                                type="text" onfocus="(this.type='date')" onblur="(this.type='text')">
-                            <input class="form-control border-start text-center" placeholder="Hẹn giờ bật" type="text"
-                                onfocus="(this.type='time')" onblur="(this.type='text')">
-                            <button class="btn bg-gradient-primary mb-0" type="Device 1"
-                                id="button-addon1">Button</button>
-                            <input class="form-control border-end text-center" placeholder="(option) Giờ tắt"
-                                type="text" onfocus="(this.type='time')" onblur="(this.type='text')">
+                        <form onsubmit="return false;" class="input-group my-2" id="device1_timer">
+                            <!-- <div class="input-group my-2" id="device1_timer"> -->
+                            <input type="checkbox" disabled class="align-self-center me-2" name="check">
+                            <input class="form-control border-start border-end text-center" name="dateStart"
+                                placeholder="Hẹn ngày bật" type="text" onfocus="(this.type='date')"
+                                onblur="(this.type='text')" required>
+                            <input class="form-control border-start text-center" name="timeStart"
+                                placeholder="Hẹn giờ bật" type="text" onfocus="(this.type='time')"
+                                onblur="(this.type='text')" required>
+                            <button class="btn bg-gradient-primary mb-0" type="submit" name="submitBtn">Device
+                                1</button>
+                            <input class="form-control border-end text-center" name="timeOff"
+                                placeholder="(option) Giờ tắt" type="text" onfocus="(this.type='time')"
+                                onblur="(this.type='text')">
                             <button type="button" class="btn-close btn-sm align-self-center ms-2 rounded-2 bg-danger"
-                                aria-label="Close"></button>
-                        </div>
+                                aria-label="Close" name="closeBtn"></button>
+                            <!-- </div> -->
+                        </form>
 
-                        <div class="input-group my-2">
-                            <input type="checkbox" disabled class="align-self-center me-2">
-                            <input class="form-control border-start border-end text-center" placeholder="Hẹn ngày bật"
-                                type="text" onfocus="(this.type='date')" onblur="(this.type='text')">
-                            <input class="form-control border-start text-center" placeholder="Hẹn giờ bật" type="text"
-                                onfocus="(this.type='time')" onblur="(this.type='text')">
-                            <button class="btn bg-gradient-primary mb-0" type="Device 1"
-                                id="button-addon1">Button</button>
-                            <input class="form-control border-end text-center" placeholder="(option) Giờ tắt"
-                                type="text" onfocus="(this.type='time')" onblur="(this.type='text')">
+                        <form onsubmit="return false;" class="input-group my-2" id="device2_timer">
+                            <!-- <div class="input-group my-2" id="device1_timer"> -->
+                            <input type="checkbox" disabled class="align-self-center me-2" name="check">
+                            <input class="form-control border-start border-end text-center" name="dateStart"
+                                placeholder="Hẹn ngày bật" type="text" onfocus="(this.type='date')"
+                                onblur="(this.type='text')" required>
+                            <input class="form-control border-start text-center" name="timeStart"
+                                placeholder="Hẹn giờ bật" type="text" onfocus="(this.type='time')"
+                                onblur="(this.type='text')" required>
+                            <button class="btn bg-gradient-primary mb-0" type="submit" name="submitBtn">Device
+                                2</button>
+                            <input class="form-control border-end text-center" name="timeOff"
+                                placeholder="(option) Giờ tắt" type="text" onfocus="(this.type='time')"
+                                onblur="(this.type='text')">
                             <button type="button" class="btn-close btn-sm align-self-center ms-2 rounded-2 bg-danger"
-                                aria-label="Close"></button>
-                        </div>
+                                aria-label="Close" name="closeBtn"></button>
+                            <!-- </div> -->
+                        </form>
 
-                        <div class="input-group my-2">
-                            <input type="checkbox" disabled class="align-self-center me-2">
-                            <input class="form-control border-start border-end text-center" placeholder="Hẹn ngày bật"
-                                type="text" onfocus="(this.type='date')" onblur="(this.type='text')">
-                            <input class="form-control border-start text-center" placeholder="Hẹn giờ bật" type="text"
-                                onfocus="(this.type='time')" onblur="(this.type='text')">
-                            <button class="btn bg-gradient-primary mb-0" type="Device 1"
-                                id="button-addon1">Button</button>
-                            <input class="form-control border-end text-center" placeholder="(option) Giờ tắt"
-                                type="text" onfocus="(this.type='time')" onblur="(this.type='text')">
+                        <form onsubmit="return false;" class="input-group my-2" id="device3_timer">
+                            <!-- <div class="input-group my-2" id="device1_timer"> -->
+                            <input type="checkbox" disabled class="align-self-center me-2" name="check">
+                            <input class="form-control border-start border-end text-center" name="dateStart"
+                                placeholder="Hẹn ngày bật" type="text" onfocus="(this.type='date')"
+                                onblur="(this.type='text')" required>
+                            <input class="form-control border-start text-center" name="timeStart"
+                                placeholder="Hẹn giờ bật" type="text" onfocus="(this.type='time')"
+                                onblur="(this.type='text')" required>
+                            <button class="btn bg-gradient-primary mb-0" type="submit" name="submitBtn">Device
+                                3</button>
+                            <input class="form-control border-end text-center" name="timeOff"
+                                placeholder="(option) Giờ tắt" type="text" onfocus="(this.type='time')"
+                                onblur="(this.type='text')">
                             <button type="button" class="btn-close btn-sm align-self-center ms-2 rounded-2 bg-danger"
-                                aria-label="Close"></button>
-                        </div>
+                                aria-label="Close" name="closeBtn"></button>
+                            <!-- </div> -->
+                        </form>
 
-                        <div class="input-group mt-2 mb-3">
-                            <input type="checkbox" disabled class="align-self-center me-2">
-                            <input class="form-control border-start border-end text-center" placeholder="Hẹn ngày bật"
-                                type="text" onfocus="(this.type='date')" onblur="(this.type='text')">
-                            <input class="form-control border-start text-center" placeholder="Hẹn giờ bật" type="text"
-                                onfocus="(this.type='time')" onblur="(this.type='text')">
-                            <button class="btn bg-gradient-primary mb-0" type="Device 1"
-                                id="button-addon1">Button</button>
-                            <input class="form-control border-end text-center" placeholder="(option) Giờ tắt"
-                                type="text" onfocus="(this.type='time')" onblur="(this.type='text')">
+                        <form onsubmit="return false;" class="input-group my-2" id="device4_timer">
+                            <!-- <div class="input-group my-2" id="device1_timer"> -->
+                            <input type="checkbox" disabled class="align-self-center me-2" name="check">
+                            <input class="form-control border-start border-end text-center" name="dateStart"
+                                placeholder="Hẹn ngày bật" type="text" onfocus="(this.type='date')"
+                                onblur="(this.type='text')" required>
+                            <input class="form-control border-start text-center" name="timeStart"
+                                placeholder="Hẹn giờ bật" type="text" onfocus="(this.type='time')"
+                                onblur="(this.type='text')" required>
+                            <button class="btn bg-gradient-primary mb-0" type="submit" name="submitBtn">Device
+                                4</button>
+                            <input class="form-control border-end text-center" name="timeOff"
+                                placeholder="(option) Giờ tắt" type="text" onfocus="(this.type='time')"
+                                onblur="(this.type='text')">
                             <button type="button" class="btn-close btn-sm align-self-center ms-2 rounded-2 bg-danger"
-                                aria-label="Close"></button>
-                        </div>
+                                aria-label="Close" name="closeBtn"></button>
+                            <!-- </div> -->
+                        </form>
                     </div>
                 </div>
             </div>
@@ -437,12 +461,6 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
     <script src="../assets/js/soft-ui-dashboard.min.js?v=1.0.3"></script>
-    <!-- Chart Js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js"></script>
-    <!-- data Tables -->
-    <script type="text/javascript" charset="utf8"
-        src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
-    <script src="https://cdn.datatables.net/plug-ins/1.11.3/pagination/input.js"></script>
     <!-- Socket IO -->
     <script src="/socket.io/socket.io.js"></script>
 
@@ -454,4 +472,388 @@
             whatTimeIsThis = whatTimeIsThis.toString().slice(4, 24);
             document.getElementById("local-time").innerHTML = whatTimeIsThis
         }, 1000)
+    </script>
+
+    <!-- 123 -->
+    <script>
+        /*---------------BUTTON---------------*/
+        var device1_button = document.getElementById("device1_btn");
+        var device2_button = document.getElementById("device2_btn");
+        var device3_button = document.getElementById("device3_btn");
+        var device4_button = document.getElementById("device4_btn");
+        device1_button.addEventListener("click", function () {
+            document.getElementById("device1_check").checked = !document.getElementById("device1_check").checked;
+            on_off_button();
+        });
+        device2_button.addEventListener("click", function () {
+            document.getElementById("device2_check").checked = !document.getElementById("device2_check").checked;
+            on_off_button();
+        });
+        device3_button.addEventListener("click", function () {
+            document.getElementById("device3_check").checked = !document.getElementById("device3_check").checked;
+            on_off_button();
+        });
+        device4_button.addEventListener("click", function () {
+            document.getElementById("device4_check").checked = !document.getElementById("device4_check").checked;
+            on_off_button();
+        });
+
+        function on_off_button() {
+            var list = {
+                "Room": "livingroom",
+                "Device": [0, 0, 0, 0]
+            }
+            list.Device[0] = document.getElementById("device1_check").checked | 0;
+            list.Device[1] = document.getElementById("device2_check").checked | 0;
+            list.Device[2] = document.getElementById("device3_check").checked | 0;
+            list.Device[3] = document.getElementById("device4_check").checked | 0;
+            // console.log(list);
+            socket.emit("device_control", list);
+        }
+
+        //cập nhật trạng thái nút nhấn
+        socket.on("button_state", function (data) {
+            for (let i in data) {
+                if (data[i].Room == "livingroom") {
+                    document.getElementById("device1_check").checked = !!+data[i].Device1
+                    document.getElementById("device2_check").checked = !!+data[i].Device2
+                    document.getElementById("device3_check").checked = !!+data[i].Device3
+                    document.getElementById("device4_check").checked = !!+data[i].Device4
+                }
+            }
+        });
+
+        /*--------------TIMER-----------------*/
+        //The elements collection returns a collection of all elements in a form.
+        var device1_timer = document.getElementById("device1_timer").elements;
+        var device2_timer = document.getElementById("device2_timer").elements;
+        var device3_timer = document.getElementById("device3_timer").elements;
+        var device4_timer = document.getElementById("device4_timer").elements;
+        //timer device1
+        device1_timer.namedItem("submitBtn").addEventListener("click", function () {
+            submit_timer(device1_timer, "livingroom", 1);
+        });
+        device1_timer.namedItem("dateStart").addEventListener("blur", function () {
+            timer_date_handle(device1_timer);
+        });
+        device1_timer.namedItem("timeStart").addEventListener("blur", function () {
+            timer_time_handle(device1_timer);
+        });
+        device1_timer.namedItem("timeOff").addEventListener("blur", function () {
+            timer_time_handle(device1_timer);
+        });
+        device1_timer.namedItem("closeBtn").addEventListener("click", function () {
+            delete_timer(device1_timer, "livingroom", 1);
+        });
+        //timer device2
+        device2_timer.namedItem("submitBtn").addEventListener("click", function () {
+            submit_timer(device2_timer, "livingroom", 2);
+        });
+        device2_timer.namedItem("dateStart").addEventListener("blur", function () {
+            timer_date_handle(device2_timer);
+        });
+        device2_timer.namedItem("timeStart").addEventListener("blur", function () {
+            timer_time_handle(device2_timer);
+        });
+        device2_timer.namedItem("timeOff").addEventListener("blur", function () {
+            timer_time_handle(device2_timer);
+        });
+        device2_timer.namedItem("closeBtn").addEventListener("click", function () {
+            delete_timer(device2_timer, "livingroom", 2);
+        });
+        //timer device3
+        device3_timer.namedItem("submitBtn").addEventListener("click", function () {
+            submit_timer(device3_timer, "livingroom", 3);
+        });
+        device3_timer.namedItem("dateStart").addEventListener("blur", function () {
+            timer_date_handle(device3_timer);
+        });
+        device3_timer.namedItem("timeStart").addEventListener("blur", function () {
+            timer_time_handle(device3_timer);
+        });
+        device3_timer.namedItem("timeOff").addEventListener("blur", function () {
+            timer_time_handle(device3_timer);
+        });
+        device3_timer.namedItem("closeBtn").addEventListener("click", function () {
+            delete_timer(device3_timer, "livingroom", 3);
+        });
+        //timer device4
+        device4_timer.namedItem("submitBtn").addEventListener("click", function () {
+            submit_timer(device4_timer, "livingroom", 4);
+        });
+        device4_timer.namedItem("dateStart").addEventListener("blur", function () {
+            timer_date_handle(device4_timer);
+        });
+        device4_timer.namedItem("timeStart").addEventListener("blur", function () {
+            timer_time_handle(device4_timer);
+        });
+        device4_timer.namedItem("timeOff").addEventListener("blur", function () {
+            timer_time_handle(device4_timer);
+        });
+        device4_timer.namedItem("closeBtn").addEventListener("click", function () {
+            delete_timer(device4_timer, "livingroom", 4);
+        });
+
+        var date = new Date();
+        function timer_date_handle(device_timer) {
+            var currentDate = date.getFullYear() + '-' + (date.getMonth() + 1).toString().padStart(2, '0') + '-' + date.getDate().toString().padStart(2, '0');
+            var currentTime = date.getHours().toString().padStart(2, '0') + ':' + date.getMinutes().toString().padStart(2, '0');
+
+            //ngày phải lớn hơn hoặc bằng ngày hiện tại
+            if (device_timer.namedItem("dateStart").value < currentDate) {
+                device_timer.namedItem("dateStart").setCustomValidity("Ngày không hợp lệ");
+                device_timer.namedItem("dateStart").reportValidity();
+                device_timer.namedItem("dateStart").setCustomValidity('');
+                device_timer.namedItem("dateStart").value = "";
+            }
+            else
+                timer_time_handle(device_timer);
+        }
+        function timer_time_handle(device_timer) {
+            var currentDate = date.getFullYear() + '-' + (date.getMonth() + 1).toString().padStart(2, '0') + '-' + date.getDate().toString().padStart(2, '0');
+            var currentTime = date.getHours().toString().padStart(2, '0') + ':' + date.getMinutes().toString().padStart(2, '0');
+
+            //nếu cùng ngày thì giờ bật phải > current time
+            if (device_timer.namedItem("timeStart").value != "" && device_timer.namedItem("timeStart").value <= currentTime && device_timer.namedItem("dateStart").value == currentDate) {
+                device_timer.namedItem("timeStart").setCustomValidity("Giờ bật không hợp lệ");
+                device_timer.namedItem("timeStart").reportValidity();
+                device_timer.namedItem("timeStart").setCustomValidity('');
+                device_timer.namedItem("timeStart").value = "";
+            }
+
+            //nếu hẹn giờ tắt thì phải lớn hơn giờ bật
+            if (device_timer.namedItem("timeStart").value != "" && device_timer.namedItem("timeOff").value != "" && device_timer.namedItem("timeOff").value <= device_timer.namedItem("timeStart").value) {
+                device_timer.namedItem("timeOff").setCustomValidity("Giờ tắt không hợp lệ");
+                device_timer.namedItem("timeOff").reportValidity();
+                device_timer.namedItem("timeOff").setCustomValidity("");
+                device_timer.namedItem("timeOff").value = "";
+            }
+        }
+        function submit_timer(device_timer, device_room, deviceID) {
+            if (device_timer.namedItem("dateStart").value != "" && device_timer.namedItem("timeStart").value != "") {
+                var timeoff;
+                if (device_timer.namedItem("timeOff").value == "")
+                    timeoff = "00:00:00";
+                else
+                    timeoff = device_timer.namedItem("timeOff").value;
+
+                var timer_list = {
+                    "room": device_room,
+                    "device": deviceID,
+                    "date": device_timer.namedItem("dateStart").value,
+                    "timeOn": device_timer.namedItem("timeStart").value,
+                    "timeOff": timeoff
+                };
+
+                socket.emit("set_timer", timer_list);
+                device_timer.namedItem("check").checked = true;
+            }
+        }
+        function delete_timer(device_timer, device_room, deviceID) {
+            if (device_timer.namedItem("dateStart").value != "" || device_timer.namedItem("timeStart").value != "" || device_timer.namedItem("timeOff").value != "") {
+                var del = {
+                    "Room": device_room,
+                    "Device": deviceID,
+                };
+
+                socket.emit("delete_timer", del);
+
+                device_timer.namedItem("dateStart").value = "";
+                device_timer.namedItem("timeStart").value = "";
+                device_timer.namedItem("timeOff").value = "";
+                device_timer.namedItem("check").checked = false;
+            }
+        }
+
+        //hiện thị thời gian đã hẹn lên timer table
+        socket.on("timer-table", function (data) {
+            device1_timer.namedItem("check").checked = false;
+            device1_timer.namedItem("dateStart").value = "";
+            device1_timer.namedItem("timeStart").value = "";
+            device1_timer.namedItem("timeOff").value = "";
+            device2_timer.namedItem("check").checked = false;
+            device2_timer.namedItem("dateStart").value = "";
+            device2_timer.namedItem("timeStart").value = "";
+            device2_timer.namedItem("timeOff").value = "";
+            device3_timer.namedItem("check").checked = false;
+            device3_timer.namedItem("dateStart").value = "";
+            device3_timer.namedItem("timeStart").value = "";
+            device3_timer.namedItem("timeOff").value = "";
+            device4_timer.namedItem("check").checked = false;
+            device4_timer.namedItem("dateStart").value = "";
+            device4_timer.namedItem("timeStart").value = "";
+            device4_timer.namedItem("timeOff").value = "";
+            for (let i in data) {
+                if (data[i].Room == "livingroom") {
+                    switch (data[i].Device) {
+                        case 1:
+                            device1_timer.namedItem("check").checked = true;
+                            device1_timer.namedItem("dateStart").value = data[i].DateStart;
+                            device1_timer.namedItem("timeStart").value = data[i].SetTimeOn;
+                            if (data[i].SetTimeOff != "00:00:00")
+                                device1_timer.namedItem("timeOff").value = data[i].SetTimeOff;
+                            break;
+                        case 2:
+                            device2_timer.namedItem("check").checked = true;
+                            device2_timer.namedItem("dateStart").value = data[i].DateStart;
+                            device2_timer.namedItem("timeStart").value = data[i].SetTimeOn;
+                            if (data[i].SetTimeOff != "00:00:00")
+                                device2_timer.namedItem("timeOff").value = data[i].SetTimeOff;
+                            break;
+                        case 3:
+                            device3_timer.namedItem("check").checked = true;
+                            device3_timer.namedItem("dateStart").value = data[i].DateStart;
+                            device3_timer.namedItem("timeStart").value = data[i].SetTimeOn;
+                            if (data[i].SetTimeOff != "00:00:00")
+                                device3_timer.namedItem("timeOff").value = data[i].SetTimeOff;
+                            break;
+                        case 4:
+                            device4_timer.namedItem("check").checked = true;
+                            device4_timer.namedItem("dateStart").value = data[i].DateStart;
+                            device4_timer.namedItem("timeStart").value = data[i].SetTimeOn;
+                            if (data[i].SetTimeOff != "00:00:00")
+                                device4_timer.namedItem("timeOff").value = data[i].SetTimeOff;
+                            break;
+                        default: break;
+                    }
+                }
+            }
+        });
+    </script>
+
+    <!-- module xu ly thong bao va cai dat nguong -->
+    <script>
+        //toastr init
+        toastr.options = {
+            "closeButton": true,
+            "debug": true,
+            "newestOnTop": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": true,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "5000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+        //show lịch sử thông báo, dropdown notifi menu
+        var history_temper_value = document.getElementById("temper_history");
+        var history_temper_time = document.getElementById("temper_history_time");
+
+        var history_humi_value = document.getElementById("humi_history");
+        var history_humi_time = document.getElementById("humi_history_time");
+
+        var history_co2_value = document.getElementById("co2_history");
+        var history_co2_time = document.getElementById("co2_history_time");
+
+        var history_gas_value = document.getElementById("gas_history");
+        var history_gas_time = document.getElementById("gas_history_time");
+
+        var history_dust_value = document.getElementById("dust_history");
+        var history_dust_time = document.getElementById("dust_history_time");
+
+        //cap nhat gia tri dropdown notifi menu
+        document.getElementById("dropdownNotifiButton").addEventListener("click", function () {
+            socket.emit("notifi_onclick", "trigger");
+        });
+        socket.on("update_notifi", function (data) {
+            history_temper_value.innerHTML = data.Temper.value + '<span class="text-success text-sm font-weight-bolder ps-1">&degC</span>';
+            history_temper_time.innerHTML = data.Temper.time;
+
+            history_humi_value.innerHTML = data.Humi.value + '<span class="text-success text-sm font-weight-bolder ps-1">%</span>';
+            history_humi_time.innerHTML = data.Humi.time;
+
+            history_co2_value.innerHTML = data.Co2.value + '<span class="text-success text-sm font-weight-bolder ps-1">PPM</span>';
+            history_co2_time.innerHTML = data.Co2.time;
+
+            history_gas_value.innerHTML = data.Gas.value + '<span class="text-success text-sm font-weight-bolder ps-1">PPM</span>';
+            history_gas_time.innerHTML = data.Gas.time;
+
+            history_dust_value.innerHTML = data.Dust.value + '<span class="text-success text-sm font-weight-bolder ps-1">ug/m3</span>';
+            history_dust_time.innerHTML = data.Dust.time;
+        });
+
+        //--------------xử lý giá trị đặt ngưỡng--------------------------------
+        //onload sẽ cập nhật giá trị ngưỡng cũ từ database vào list dưới đây
+        var setting_menu = document.getElementById("dropdownSettingMenu").elements;
+        var setting_list = { "Temper": 0, "Humi": 0, "Co2": 0, "Gas": 0, "Dust": 0 };
+
+        //cap nhat gia tri setting menu
+        var setting_btn_dropdown = document.getElementById("dropdownSettingBtn");
+        setting_btn_dropdown.addEventListener("click", function () {
+            socket.emit("dropdownSettingMenu_onlick", "trigger");
+        });
+
+        socket.on("update_setting", function (data) {
+            // console.log(data);
+            setting_menu.namedItem("max-temper").value = data.Temper;
+            setting_menu.namedItem("max-humi").value = data.Humi;
+            setting_menu.namedItem("max-co2").value = data.Co2;
+            setting_menu.namedItem("max-gas").value = data.Gas;
+            setting_menu.namedItem("max-dust").value = data.Dust;
+            setting_list.Temper = data.Temper;
+            setting_list.Humi = data.Humi;
+            setting_list.Co2 = data.Co2;
+            setting_list.Gas = data.Gas;
+            setting_list.Dust = data.Dust;
+        });
+
+
+        var submit_btn = document.getElementById("setting_btn");
+        submit_btn.addEventListener("click", function () {
+            if (setting_menu.namedItem("max-temper").value > 0)
+                //nếu giá trị cài ngưỡng mới thỏa mãn đk thì update vào list
+                setting_list.Temper = setting_menu.namedItem("max-temper").value;
+
+            if (setting_menu.namedItem("max-humi").value > 0)
+                setting_list.Humi = setting_menu.namedItem("max-humi").value;
+
+            if (setting_menu.namedItem("max-co2").value > 0)
+                setting_list.Co2 = setting_menu.namedItem("max-co2").value;
+
+            if (setting_menu.namedItem("max-gas").value > 0)
+                setting_list.Gas = setting_menu.namedItem("max-gas").value;
+
+            if (setting_menu.namedItem("max-dust").value > 0)
+                setting_list.Dust = setting_menu.namedItem("max-dust").value;
+
+            socket.emit("change-setting", setting_list);
+        });
+
+        //hiển thị thông báo khi vượt ngưỡng cài đặt, mỗi lần server nhận đc dữ liệu mới từ cảm biến
+        var notification = false;
+        socket.on("notifi_mode", function (data) {
+            console.log(data);
+            if (data == "on")
+                notification = true;
+            else
+                notification = false;
+        });
+
+        //dam bao sau khi mode variable da dc load
+        $(document).ready(function () {
+            socket.on("show_toastr", function (data) {
+                if (notification) {
+                    if (data.Temper >= setting_list.Temper)
+                        toastr["success"](data.Temper + ' °C', "Nhiệt độ", { "iconClass": 'customer-temper' });
+
+                    if (data.Humi >= setting_list.Humi)
+                        toastr["success"](data.Humi + ' %', "Độ ẩm", { "iconClass": 'customer-humi' });
+
+                    if (data.Co2 >= setting_list.Co2)
+                        toastr["success"](data.Co2 + ' PPM', "Co2", { "iconClass": 'customer-co2' });
+
+                    if (data.Gas >= setting_list.Gas)
+                        toastr["success"](data.Gas + ' PPM', "Gas", { "iconClass": 'customer-gas' });
+
+                    if (data.Dust >= setting_list.Dust)
+                        toastr["success"](data.Dust + ' ug/m3', "Dust", { "iconClass": 'customer-dust' });
+                }
+            });
+        });
     </script>
