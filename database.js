@@ -56,5 +56,12 @@ con.connect(function (err) {
         if(err) throw err;
         console.log("device_control table is created");
     });
+
+    sqlQuery = "create table if not exists camera_url (Time datetime not null default current_timestamp, Room varchar(255) not null, Url varchar(255) not null);"
+    //set unique key for Room column
+    con.query(sqlQuery, function(err){
+        if(err) throw err;
+        console.log("camera_url table is created");
+    })
 });
 

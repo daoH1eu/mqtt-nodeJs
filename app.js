@@ -274,6 +274,19 @@ io.on("connection", function (socket) {
     });
     // /*---------------trạng thái thiết bị đã đc lưu, cập nhật trạng thái nút nhấn----------------*/
     update_device_state(socket);
+    /*------------------Camea URL--------------------------------- */
+    socket.on("save_camera_url", function (data) {
+        var sqlQuery = "insert into camera_url (Room, Url) values ('" + data.Room + "', '" + data.Url + "') on duplicate key update Room=values(Room), Url=values(Url);"
+        con.query(sqlQuery, function (err) {
+            if (err) throw err;
+            console.log("Save camera URL");
+        });
+    });
+    sqlQuery = "select * from camera_url;"
+    con.query(sqlQuery, function (err, result) {
+        if (err) throw err;
+        socket.emit("camera_url", result);
+    });
 });
 
 //function
