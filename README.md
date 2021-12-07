@@ -4,9 +4,9 @@ Theo dõi cảm biến, điều khiển thiết bị
 ### 1. Giao diện Web (updating...)
 - Chỉnh sửa dựa trên: https://demos.creative-tim.com/soft-ui-dashboard/pages/dashboard.html?_ga=2.14654391.1834153662.1637824728-678885277.1635873874
 
-- Quan sát giá trị các cảm biến
+- Quan sát giá trị các cảm biến, trạng thái của cảm biến
 
-<img src="https://user-images.githubusercontent.com/84682521/143783637-6710b63e-85e4-4e0a-8f1e-9a49f928ce2b.png" width="90%"></img>
+<img src="https://user-images.githubusercontent.com/84682521/145083669-1538cd35-39e1-406d-a600-e68e8ab8ecac.png" width="90%"></img>
 
 - Lịch sử thu thập của từng loại cảm biến
 
@@ -22,8 +22,7 @@ Theo dõi cảm biến, điều khiển thiết bị
 
 - Cài đặt ngưỡng và xem lịch sử giá trị vượt ngưỡng
 
-<img src="https://user-images.githubusercontent.com/84682521/143783992-db2bb77e-1a4a-48e1-a328-4cede47be12f.png" width="45%"></img> <img src="https://user-images.githubusercontent.com/84682521/143783652-2f345859-e351-4ed4-95e8-39da9bedcc6e.png" width="45%"></img>
-
+<img src="https://user-images.githubusercontent.com/84682521/145083654-f6c609e4-79e8-46e2-8ffa-0284637425c6.png" width="90%"></img>
 ### 2. Phần cứng
 - Esp01s giao tiếp uart Ardunio Mini
 - 10 relay điều khiển
