@@ -154,6 +154,13 @@ io.on("connection", function (socket) {
         socket.emit("sensor-data-table", result);
     })
 
+    //hien thi icon tren House Overview
+    sqlQuery = "select * from device_control where (Device1 = 1 or Device2 = 1 or Device3 = 1 or Device4 = 1);"
+    con.query(sqlQuery, function(err, result){
+        if(err) throw err;
+        socket.emit("update_houseOV", result);
+    });
+    
     //hien thi lich su thong bao gui cho client
     var data = {
         "Temper": {
@@ -274,6 +281,7 @@ io.on("connection", function (socket) {
     });
     // /*---------------trạng thái thiết bị đã đc lưu, cập nhật trạng thái nút nhấn----------------*/
     update_device_state(socket);
+
     /*------------------Camea URL--------------------------------- */
     socket.on("save_camera_url", function (data) {
         var sqlQuery = "insert into camera_url (Room, Url) values ('" + data.Room + "', '" + data.Url + "') on duplicate key update Room=values(Room), Url=values(Url);"
@@ -499,6 +507,7 @@ function trigger_device() {
     var device_list = { "kitchen": [0, 0, 0, 0], "living": [0, 0, 0, 0], "bed1": [0, 0, 0, 0], "bed2": [0, 0, 0, 0] };
     con.query("select * from device_control", function (err, result) {
         if (err) throw err;
+        // io.emit
         for (let i in result) {
             switch (result[i].Room) {
                 case 'livingroom':

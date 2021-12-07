@@ -175,7 +175,8 @@
                     <h6 class="text-sm font-weight-bold">Dust</h6>
                     <input class="form-control form-control-sm mb-2" type="number" onfocus="this.value=''"
                       placeholder="đặt ngưỡng" id="max-dust">
-                    <button type="button" class="btn btn-sm bg-gradient-success mt-2 ms-2" id="setting_btn">Accept</button>
+                    <button type="button" class="btn btn-sm bg-gradient-success mt-2 ms-2"
+                      id="setting_btn">Accept</button>
                   </form>
                 </li>
               </ul>
@@ -598,11 +599,15 @@
               <h6 class="font-weight-bolder mb-0 text-center">House Overview</h6>
             </div>
             <div class="card-body px-4 pt-0 pb-4" style="position: relative;">
-              <img src="../media/House Floor Plan.vpd.jpg" class="img-fluid" style="position: relative;">
-              <img src="../media/led.png" width="80" height="80" style="position: absolute; top: 40px; left:100px;">
-              <img src="../media/led.png" width="80" height="80" style="position: absolute; top: 230px; left:20px;">
-              <img src="../media/led.png" width="80" height="80" style="position: absolute; top: 50px; left:450px;">
-              <img src="../media/led.png" width="80" height="80" style="position: absolute; top: 230px; left:180px;">
+              <img src="../media/House Floor Plan.vpd.jpg" class="img-fluid">
+              <img src="../media/led.png" class="img-fluid" id="led_bed1"
+                style="position: absolute; left: 15%; top: 20%; max-width:10%; visibility: hidden;">
+              <img src="../media/led.png" class="img-fluid" id="led_kitchen"
+                style="position: absolute; left: 77%; top: 20%; max-width:10%; visibility: hidden;">
+              <img src="../media/led.png" class="img-fluid" id="led_bed2"
+                style="position: absolute; left: 15%; top: 55%; max-width:10%; visibility: hidden;">
+              <img src="../media/led.png" class="img-fluid" id="led_livingroom"
+                style="position: absolute; left: 45%; top: 55%; max-width:10%; visibility: hidden;">
             </div>
           </div>
         </div>
@@ -786,6 +791,29 @@
       lux_value.innerHTML = data.Lux + '<span class="text-success text-sm font-weight-bolder ps-2">LUX</span>';
       dust_value.innerHTML = data.Dust + '<span class="text-success text-sm font-weight-bolder ps-2">ug/m3</span>';
     });
+
+    //hien thi led icon tren House Overview
+    socket.on("update_houseOV", function (data) {
+      console.log(data);
+      for (let i in data) {
+        switch (data[i].Room) {
+          case "bedroom1":
+            document.getElementById("led_bed1").style.visibility = "visible";
+            break;
+          case "bedroom2":
+            document.getElementById("led_bed2").style.visibility = "visible";
+            break;
+          case "kitchen":
+            document.getElementById("led_kitchen").style.visibility = "visible";
+            break;
+          case "livingroom":
+            document.getElementById("led_livingroom").style.visibility = "visible";
+            break;
+          default:
+            break;
+        }
+      }
+    });
   </script>
 
   <!-- module xu ly thong bao va cai dat nguong -->
@@ -924,6 +952,7 @@
       });
     });
   </script>
+
 </body>
 
 </html>
