@@ -35,7 +35,8 @@ Theo dõi cảm biến, điều khiển thiết bị
 
 <img src="https://user-images.githubusercontent.com/84682521/143379857-671ab5d5-e4d1-493d-ae99-20765eddce86.jpg" width="90%"></img> 
 
-### 3. Mô hình (updating...)
+### 3. Mô hình sản phẩm
 
-<img src="https://user-images.githubusercontent.com/84682521/144887765-ff7a4b3d-3989-433b-9472-2ebcb2bbde0d.jpg" width="90%"></img> 
-<img src="https://user-images.githubusercontent.com/84682521/144887587-30064364-f092-4f0f-a174-b960cbc430b5.jpg" width="45%"></img> <img src="https://user-images.githubusercontent.com/84682521/144887593-926e5225-c565-43ce-a114-7453d6dc9841.jpg" width="45%"></img> 
+<img src="https://user-images.githubusercontent.com/84682521/144887765-ff7a4b3d-3989-433b-9472-2ebcb2bbde0d.jpg" width="45%"></img> <img src="https://user-images.githubusercontent.com/84682521/145568301-bb3e7821-1755-477b-9c7a-99ec1af1edb8.jpg" width="45%"></img> 
+
+<img src="https://user-images.githubusercontent.com/84682521/144887587-30064364-f092-4f0f-a174-b960cbc430b5.jpg" width="45%"></img> <img src="https://user-images.githubusercontent.com/84682521/145568303-68f140db-74ce-4c38-8d9a-e12233b824b9.jpg" width="45%"></img> 
