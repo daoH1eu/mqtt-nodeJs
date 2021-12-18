@@ -1,18 +1,3 @@
-<!--
-=========================================================
-* Soft UI Dashboard - v1.0.3
-========================================================= 
-
-* Product Page: https://www.creative-tim.com/product/soft-ui-dashboard
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://www.creative-tim.com/license)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
--->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -38,14 +23,14 @@
     <link id="pagestyle" href="../assets/css/soft-ui-dashboard.css?v=1.0.3" rel="stylesheet" />
     <!-- Scroll Bar -->
     <!-- <link href="../assets/css/customScrollbar.css" rel="stylesheet" /> -->
-    <link href="../assets/css//noScroll.css" rel="stylesheet" />
+    <link href="../assets/css/noScroll.css" rel="stylesheet" />
     <!-- toastr -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.css" rel="stylesheet" />
     <link href="../assets/css/custom-toastr.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
-    <!-- data table -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+    <!-- silder button -->
+    <link href="../assets/css/toggle_button.css" rel="stylesheet" />
 </head>
 
 <body class="g-sidenav-show  bg-gray-100">
@@ -62,7 +47,7 @@
         <div class="collapse navbar-collapse  noscroll  max-height-vh-100 h-100" id="sidenav-collapse-main">
             <ul class="navbar-nav">
                 <li class="nav-item zoom">
-                    <a class="nav-link  active" href="../pages/dashboard.html">
+                    <a class="nav-link" href="../pages/dashboard.html">
                         <div
                             class="icon icon-shape text-center shadow border-radius-md me-2 d-flex align-items-center justify-content-center">
                             <img src="../image/dashboard.png" class="img-fluid">
@@ -98,7 +83,7 @@
                     </a>
                 </li>
                 <li class="nav-item zoom">
-                    <a class="nav-link  " href="../pages/bed2.html">
+                    <a class="nav-link active" href="../pages/bed2.html">
                         <div
                             class="icon icon-shape text-center shadow border-radius-md me-2 d-flex align-items-center justify-content-center">
                             <img src="../image/bedroom2.png" class="img-fluid">
@@ -298,39 +283,142 @@
         </nav>
         <!-- End Navbar -->
         <div class="container-fluid py-4">
-            <div class="row">
-                <div class="col-lg-5  py-3 mb-lg-0 mb-4">
-                    <div class="card h-100" style="background: linear-gradient(to bottom, #ffffff 0%, #ccffff 100%);">
-                        <h6 style="text-align: center; " class="font-weight-bolder mb-0 py-3">History table</h6>
-                        <div class="px-3 pt-0 pb-3">
-                            <table id="myTable" class="table border border-5">
-                                <thead>
-                                    <tr>
-                                        <th class="text-uppercase text-xs font-weight-bolder opacity-8"
-                                            style="color: black; background-color: silver;text-align: center;">
-                                            Date Time</th>
-                                        <th class="text-uppercase text-xs font-weight-bolder opacity-8"
-                                            style="color: black; background-color: silver;text-align: center;">
-                                            Test Sensor</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
+            <div class="row mt-3">
+                <div class="col-lg mb-3">
+                    <div class="card h-100 border border-primary px-3">
+                        <div class="col-lg-12 text-center" style="height: 370px;">
+                            <img src="../image/no-signal.png" class="img-fluid mt-4" id="showCamera"
+                                style="max-height: 370px;">
+                        </div>
+                        <div class="col-lg-12 mt-3 mb-3 px-4">
+                            <h5 class="card-title text-center">Camera IP</h5>
+                            <form onsubmit="return false;" class="input-group" id="camera_input">
+                                <input class="form-control text-center" name="urlCamera" placeholder="Nhập IP Camera"
+                                    type="text" required>
+                                <button class="btn bg-gradient-info mb-0" type="submit" name="submitBtn">Accept</button>
+                            </form>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-7 py-3 mb-lg-0 mb-4">
-                    <div class="card h-100" style="background: linear-gradient(to bottom, #ffffff 0%, #ccffff 100%);">
-                        <h6 style="text-align: center; " class="font-weight-bolder mb-0 pt-3">Realtime Chart</h6>
-                        <h6 style="text-align: center; " class="font-weight-bolder mb-0" id="date"></h6>
-                        <div class="px-3 pt-0 pb-3" style="height: 430px;">
-                            <canvas id="myChart"></canvas>
+                <div class="col-lg mb-3">
+                    <div class="card py-2 px-2 border border-primary">
+                        <h5 class="card-title text-center mt-2">Điều Khiển</h5>
+                        <div class="card-group mt-2 mb-3">
+                            <div class="card zoom bg-light mx-2 cursor-pointer rounded-3 d-flex align-items-center"
+                                id="device1_btn">
+                                <h6 class="font-weight-bolder text-center pt-3">Device 1</h6>
+                                <label class="switch">
+                                    <input type="checkbox" id="device1_check">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            <div class="card zoom bg-light mx-2 cursor-pointer rounded-3 d-flex align-items-center"
+                                id="device2_btn">
+                                <h6 class="font-weight-bolder text-center pt-3">Device 2</h6>
+                                <label class="switch">
+                                    <input type="checkbox" id="device2_check">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            <div class="card zoom bg-light mx-2 cursor-pointer rounded-3 d-flex align-items-center"
+                                id="device3_btn">
+                                <h6 class="font-weight-bolder text-center pt-3">Device 3</h6>
+                                <label class="switch">
+                                    <input type="checkbox" id="device3_check">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            <div class="card zoom bg-light mx-2 cursor-pointer rounded-3 d-flex align-items-center"
+                                id="device4_btn">
+                                <h6 class="font-weight-bolder text-center pt-3">Device 4</h6>
+                                <label class="switch">
+                                    <input type="checkbox" id="device4_check">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
                         </div>
+                    </div>
+                    <div class="card mt-3 py-2 px-3 border border-primary">
+                        <h5 class="card-title text-center mt-2">Hẹn Giờ</h5>
+                        <form onsubmit="return false;" class="input-group my-2" id="device1_timer">
+                            <!-- <div class="input-group my-2" id="device1_timer"> -->
+                            <input type="checkbox" disabled class="align-self-center me-2" name="check">
+                            <input class="form-control border-start border-end text-center" name="dateStart"
+                                placeholder="Hẹn ngày bật" type="text" onfocus="(this.type='date')"
+                                onblur="(this.type='text')" required>
+                            <input class="form-control border-start text-center" name="timeStart"
+                                placeholder="Hẹn giờ bật" type="text" onfocus="(this.type='time')"
+                                onblur="(this.type='text')" required>
+                            <button class="btn bg-gradient-primary mb-0" type="submit" name="submitBtn">Device
+                                1</button>
+                            <input class="form-control border-end text-center" name="timeOff"
+                                placeholder="(option) Giờ tắt" type="text" onfocus="(this.type='time')"
+                                onblur="(this.type='text')">
+                            <button type="button" class="btn-close btn-sm align-self-center ms-2 rounded-2 bg-danger"
+                                aria-label="Close" name="closeBtn"></button>
+                            <!-- </div> -->
+                        </form>
+
+                        <form onsubmit="return false;" class="input-group my-2" id="device2_timer">
+                            <!-- <div class="input-group my-2" id="device1_timer"> -->
+                            <input type="checkbox" disabled class="align-self-center me-2" name="check">
+                            <input class="form-control border-start border-end text-center" name="dateStart"
+                                placeholder="Hẹn ngày bật" type="text" onfocus="(this.type='date')"
+                                onblur="(this.type='text')" required>
+                            <input class="form-control border-start text-center" name="timeStart"
+                                placeholder="Hẹn giờ bật" type="text" onfocus="(this.type='time')"
+                                onblur="(this.type='text')" required>
+                            <button class="btn bg-gradient-primary mb-0" type="submit" name="submitBtn">Device
+                                2</button>
+                            <input class="form-control border-end text-center" name="timeOff"
+                                placeholder="(option) Giờ tắt" type="text" onfocus="(this.type='time')"
+                                onblur="(this.type='text')">
+                            <button type="button" class="btn-close btn-sm align-self-center ms-2 rounded-2 bg-danger"
+                                aria-label="Close" name="closeBtn"></button>
+                            <!-- </div> -->
+                        </form>
+
+                        <form onsubmit="return false;" class="input-group my-2" id="device3_timer">
+                            <!-- <div class="input-group my-2" id="device1_timer"> -->
+                            <input type="checkbox" disabled class="align-self-center me-2" name="check">
+                            <input class="form-control border-start border-end text-center" name="dateStart"
+                                placeholder="Hẹn ngày bật" type="text" onfocus="(this.type='date')"
+                                onblur="(this.type='text')" required>
+                            <input class="form-control border-start text-center" name="timeStart"
+                                placeholder="Hẹn giờ bật" type="text" onfocus="(this.type='time')"
+                                onblur="(this.type='text')" required>
+                            <button class="btn bg-gradient-primary mb-0" type="submit" name="submitBtn">Device
+                                3</button>
+                            <input class="form-control border-end text-center" name="timeOff"
+                                placeholder="(option) Giờ tắt" type="text" onfocus="(this.type='time')"
+                                onblur="(this.type='text')">
+                            <button type="button" class="btn-close btn-sm align-self-center ms-2 rounded-2 bg-danger"
+                                aria-label="Close" name="closeBtn"></button>
+                            <!-- </div> -->
+                        </form>
+
+                        <form onsubmit="return false;" class="input-group my-2" id="device4_timer">
+                            <!-- <div class="input-group my-2" id="device1_timer"> -->
+                            <input type="checkbox" disabled class="align-self-center me-2" name="check">
+                            <input class="form-control border-start border-end text-center" name="dateStart"
+                                placeholder="Hẹn ngày bật" type="text" onfocus="(this.type='date')"
+                                onblur="(this.type='text')" required>
+                            <input class="form-control border-start text-center" name="timeStart"
+                                placeholder="Hẹn giờ bật" type="text" onfocus="(this.type='time')"
+                                onblur="(this.type='text')" required>
+                            <button class="btn bg-gradient-primary mb-0" type="submit" name="submitBtn">Device
+                                4</button>
+                            <input class="form-control border-end text-center" name="timeOff"
+                                placeholder="(option) Giờ tắt" type="text" onfocus="(this.type='time')"
+                                onblur="(this.type='text')">
+                            <button type="button" class="btn-close btn-sm align-self-center ms-2 rounded-2 bg-danger"
+                                aria-label="Close" name="closeBtn"></button>
+                            <!-- </div> -->
+                        </form>
                     </div>
                 </div>
             </div>
-            <footer class="footer pt-3  ">
+            <footer class="footer pt-2  ">
                 <div class="container-fluid">
                     <div class="row align-items-center justify-content-lg-between">
                         <div class="col-lg-6 mb-lg-0 mb-4">
@@ -380,12 +468,6 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
     <script src="../assets/js/soft-ui-dashboard.min.js?v=1.0.3"></script>
-    <!-- Chart Js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js"></script>
-    <!-- data Tables -->
-    <script type="text/javascript" charset="utf8"
-        src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
-    <script src="https://cdn.datatables.net/plug-ins/1.11.3/pagination/input.js"></script>
     <!-- Socket IO -->
     <script src="/socket.io/socket.io.js"></script>
 
@@ -398,82 +480,251 @@
             document.getElementById("local-time").innerHTML = whatTimeIsThis
         }, 1000)
     </script>
-    <!-- Tables -->
-    <script>
-        // var table;
-        init_table();
 
-        socket.on("sensor-data-table", function (data) {
-            //detroy to recreate
-            if ($.fn.DataTable.isDataTable("#myTable")) {
-                $("#myTable").DataTable().clear().destroy();
-            }
-            for (let i in data) {
-                $('#myTable').append('<tr> <td class="table-light text-center" ><h6>' + data[i].Time + '</h6> </td> <td class="table-success text-center"> <h6>' + data[i].Vibrant + '</h6> </td></tr>');
-            }
-            init_table();
+    <!-- 123 -->
+    <script>
+        /*---------------BUTTON---------------*/
+        var device1_button = document.getElementById("device1_btn");
+        var device2_button = document.getElementById("device2_btn");
+        var device3_button = document.getElementById("device3_btn");
+        var device4_button = document.getElementById("device4_btn");
+        device1_button.addEventListener("click", function () {
+            document.getElementById("device1_check").checked = !document.getElementById("device1_check").checked;
+            on_off_button();
+        });
+        device2_button.addEventListener("click", function () {
+            document.getElementById("device2_check").checked = !document.getElementById("device2_check").checked;
+            on_off_button();
+        });
+        device3_button.addEventListener("click", function () {
+            document.getElementById("device3_check").checked = !document.getElementById("device3_check").checked;
+            on_off_button();
+        });
+        device4_button.addEventListener("click", function () {
+            document.getElementById("device4_check").checked = !document.getElementById("device4_check").checked;
+            on_off_button();
         });
 
-        function init_table() {
-            $('#myTable').DataTable({
-                // retrieve: true,
-                autoWidth: false,
-                pageLength: 8,
-                lengthChange: false,
-                info: false,
-                pagingType: "input",
-                //drawCallback that is called every time DataTables performs a draw.
-                drawCallback: function () {
-                    $('td').css({ 'padding-top': '1px', 'padding-bottom': '1px' });
-                },
-                order: [[0, "desc"], [1, "desc"]]//dao nguoc hang theo cot
-            });
-            $('.dataTables_filter input[type="search"]').css(
-                { 'width': '150px', 'border-collapse': 'collapse', 'border-radius': '8px' }
-            );
-            $('#myTable_first').hide();
-            $('#myTable_page').hide();
-            $('#myTable_last').hide();
-            $('.paginate_input').attr('size', 2);
-            $('#myTable_paginate').css({ 'font-size': '13px', 'font-weight': 'bold' });
+        function on_off_button() {
+            var list = {
+                "Room": "bedroom2",
+                "Device": [0, 0, 0, 0]
+            }
+            list.Device[0] = document.getElementById("device1_check").checked | 0;
+            list.Device[1] = document.getElementById("device2_check").checked | 0;
+            list.Device[2] = document.getElementById("device3_check").checked | 0;
+            list.Device[3] = document.getElementById("device4_check").checked | 0;
+            // console.log(list);
+            socket.emit("device_control", list);
         }
-    </script>
 
-    <!-- Chart Analysis -->
-    <script>
-        $(document).ready(function () {
-            var ctx = document.getElementById('myChart');
-            var myChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: [],
-                    datasets: [
-                        {
-                            data: [],
-                            label: "Test sensor",
-                            borderColor: "#3e90cd",
-                            fill: false
-                        }]
-                },
-                options: {
-                    title: {
-                        display: false,
-                        text: 'World population per region (in millions)'
-                    },
-                    responsive: true,
-                    maintainAspectRatio: false
+        //cập nhật trạng thái nút nhấn
+        socket.on("button_state", function (data) {
+            for (let i in data) {
+                if (data[i].Room == "bedroom2") {
+                    document.getElementById("device1_check").checked = !!+data[i].Device1
+                    document.getElementById("device2_check").checked = !!+data[i].Device2
+                    document.getElementById("device3_check").checked = !!+data[i].Device3
+                    document.getElementById("device4_check").checked = !!+data[i].Device4
                 }
-            });
+            }
+        });
 
-            socket.on("sensor-data-chart", function (result) {//result is array containing each row as an object
-                // console.log(data);
-                document.getElementById("date").innerHTML = "(" + result[0].Time.slice(0, 10) + ")";
-                for (let i = 0; i < result.length; i++) {
-                    myChart.data.datasets[0].data[i] = result[i].Vibrant;
-                    myChart.data.labels[i] = result[i].Time.slice(11, 19);
+        /*--------------TIMER-----------------*/
+        //The elements collection returns a collection of all elements in a form.
+        var device1_timer = document.getElementById("device1_timer").elements;
+        var device2_timer = document.getElementById("device2_timer").elements;
+        var device3_timer = document.getElementById("device3_timer").elements;
+        var device4_timer = document.getElementById("device4_timer").elements;
+        //timer device1
+        device1_timer.namedItem("submitBtn").addEventListener("click", function () {
+            submit_timer(device1_timer, "bedroom2", 1);
+        });
+        device1_timer.namedItem("dateStart").addEventListener("blur", function () {
+            timer_date_handle(device1_timer);
+        });
+        device1_timer.namedItem("timeStart").addEventListener("blur", function () {
+            timer_time_handle(device1_timer);
+        });
+        device1_timer.namedItem("timeOff").addEventListener("blur", function () {
+            timer_time_handle(device1_timer);
+        });
+        device1_timer.namedItem("closeBtn").addEventListener("click", function () {
+            delete_timer(device1_timer, "bedroom2", 1);
+        });
+        //timer device2
+        device2_timer.namedItem("submitBtn").addEventListener("click", function () {
+            submit_timer(device2_timer, "bedroom2", 2);
+        });
+        device2_timer.namedItem("dateStart").addEventListener("blur", function () {
+            timer_date_handle(device2_timer);
+        });
+        device2_timer.namedItem("timeStart").addEventListener("blur", function () {
+            timer_time_handle(device2_timer);
+        });
+        device2_timer.namedItem("timeOff").addEventListener("blur", function () {
+            timer_time_handle(device2_timer);
+        });
+        device2_timer.namedItem("closeBtn").addEventListener("click", function () {
+            delete_timer(device2_timer, "bedroom2", 2);
+        });
+        //timer device3
+        device3_timer.namedItem("submitBtn").addEventListener("click", function () {
+            submit_timer(device3_timer, "bedroom2", 3);
+        });
+        device3_timer.namedItem("dateStart").addEventListener("blur", function () {
+            timer_date_handle(device3_timer);
+        });
+        device3_timer.namedItem("timeStart").addEventListener("blur", function () {
+            timer_time_handle(device3_timer);
+        });
+        device3_timer.namedItem("timeOff").addEventListener("blur", function () {
+            timer_time_handle(device3_timer);
+        });
+        device3_timer.namedItem("closeBtn").addEventListener("click", function () {
+            delete_timer(device3_timer, "bedroom2", 3);
+        });
+        //timer device4
+        device4_timer.namedItem("submitBtn").addEventListener("click", function () {
+            submit_timer(device4_timer, "bedroom2", 4);
+        });
+        device4_timer.namedItem("dateStart").addEventListener("blur", function () {
+            timer_date_handle(device4_timer);
+        });
+        device4_timer.namedItem("timeStart").addEventListener("blur", function () {
+            timer_time_handle(device4_timer);
+        });
+        device4_timer.namedItem("timeOff").addEventListener("blur", function () {
+            timer_time_handle(device4_timer);
+        });
+        device4_timer.namedItem("closeBtn").addEventListener("click", function () {
+            delete_timer(device4_timer, "bedroom2", 4);
+        });
+
+        var date = new Date();
+        function timer_date_handle(device_timer) {
+            var currentDate = date.getFullYear() + '-' + (date.getMonth() + 1).toString().padStart(2, '0') + '-' + date.getDate().toString().padStart(2, '0');
+            var currentTime = date.getHours().toString().padStart(2, '0') + ':' + date.getMinutes().toString().padStart(2, '0');
+
+            //ngày phải lớn hơn hoặc bằng ngày hiện tại
+            if (device_timer.namedItem("dateStart").value < currentDate) {
+                device_timer.namedItem("dateStart").setCustomValidity("Ngày không hợp lệ");
+                device_timer.namedItem("dateStart").reportValidity();
+                device_timer.namedItem("dateStart").setCustomValidity('');
+                device_timer.namedItem("dateStart").value = "";
+            }
+            else
+                timer_time_handle(device_timer);
+        }
+        function timer_time_handle(device_timer) {
+            var currentDate = date.getFullYear() + '-' + (date.getMonth() + 1).toString().padStart(2, '0') + '-' + date.getDate().toString().padStart(2, '0');
+            var currentTime = date.getHours().toString().padStart(2, '0') + ':' + date.getMinutes().toString().padStart(2, '0');
+
+            //nếu cùng ngày thì giờ bật phải > current time
+            if (device_timer.namedItem("timeStart").value != "" && device_timer.namedItem("timeStart").value <= currentTime && device_timer.namedItem("dateStart").value == currentDate) {
+                device_timer.namedItem("timeStart").setCustomValidity("Giờ bật không hợp lệ");
+                device_timer.namedItem("timeStart").reportValidity();
+                device_timer.namedItem("timeStart").setCustomValidity('');
+                device_timer.namedItem("timeStart").value = "";
+            }
+
+            //nếu hẹn giờ tắt thì phải lớn hơn giờ bật
+            if (device_timer.namedItem("timeStart").value != "" && device_timer.namedItem("timeOff").value != "" && device_timer.namedItem("timeOff").value <= device_timer.namedItem("timeStart").value) {
+                device_timer.namedItem("timeOff").setCustomValidity("Giờ tắt không hợp lệ");
+                device_timer.namedItem("timeOff").reportValidity();
+                device_timer.namedItem("timeOff").setCustomValidity("");
+                device_timer.namedItem("timeOff").value = "";
+            }
+        }
+        function submit_timer(device_timer, device_room, deviceID) {
+            if (device_timer.namedItem("dateStart").value != "" && device_timer.namedItem("timeStart").value != "") {
+                var timeoff;
+                if (device_timer.namedItem("timeOff").value == "")
+                    timeoff = "00:00:00";
+                else
+                    timeoff = device_timer.namedItem("timeOff").value;
+
+                var timer_list = {
+                    "room": device_room,
+                    "device": deviceID,
+                    "date": device_timer.namedItem("dateStart").value,
+                    "timeOn": device_timer.namedItem("timeStart").value,
+                    "timeOff": timeoff
+                };
+
+                socket.emit("set_timer", timer_list);
+                device_timer.namedItem("check").checked = true;
+            }
+        }
+        function delete_timer(device_timer, device_room, deviceID) {
+            if (device_timer.namedItem("dateStart").value != "" || device_timer.namedItem("timeStart").value != "" || device_timer.namedItem("timeOff").value != "") {
+                var del = {
+                    "Room": device_room,
+                    "Device": deviceID,
+                };
+
+                socket.emit("delete_timer", del);
+
+                device_timer.namedItem("dateStart").value = "";
+                device_timer.namedItem("timeStart").value = "";
+                device_timer.namedItem("timeOff").value = "";
+                device_timer.namedItem("check").checked = false;
+            }
+        }
+
+        //hiện thị thời gian đã hẹn lên timer table
+        socket.on("timer-table", function (data) {
+            device1_timer.namedItem("check").checked = false;
+            device1_timer.namedItem("dateStart").value = "";
+            device1_timer.namedItem("timeStart").value = "";
+            device1_timer.namedItem("timeOff").value = "";
+            device2_timer.namedItem("check").checked = false;
+            device2_timer.namedItem("dateStart").value = "";
+            device2_timer.namedItem("timeStart").value = "";
+            device2_timer.namedItem("timeOff").value = "";
+            device3_timer.namedItem("check").checked = false;
+            device3_timer.namedItem("dateStart").value = "";
+            device3_timer.namedItem("timeStart").value = "";
+            device3_timer.namedItem("timeOff").value = "";
+            device4_timer.namedItem("check").checked = false;
+            device4_timer.namedItem("dateStart").value = "";
+            device4_timer.namedItem("timeStart").value = "";
+            device4_timer.namedItem("timeOff").value = "";
+            for (let i in data) {
+                if (data[i].Room == "bedroom2") {
+                    switch (data[i].Device) {
+                        case 1:
+                            device1_timer.namedItem("check").checked = true;
+                            device1_timer.namedItem("dateStart").value = data[i].DateStart;
+                            device1_timer.namedItem("timeStart").value = data[i].SetTimeOn;
+                            if (data[i].SetTimeOff != "00:00:00")
+                                device1_timer.namedItem("timeOff").value = data[i].SetTimeOff;
+                            break;
+                        case 2:
+                            device2_timer.namedItem("check").checked = true;
+                            device2_timer.namedItem("dateStart").value = data[i].DateStart;
+                            device2_timer.namedItem("timeStart").value = data[i].SetTimeOn;
+                            if (data[i].SetTimeOff != "00:00:00")
+                                device2_timer.namedItem("timeOff").value = data[i].SetTimeOff;
+                            break;
+                        case 3:
+                            device3_timer.namedItem("check").checked = true;
+                            device3_timer.namedItem("dateStart").value = data[i].DateStart;
+                            device3_timer.namedItem("timeStart").value = data[i].SetTimeOn;
+                            if (data[i].SetTimeOff != "00:00:00")
+                                device3_timer.namedItem("timeOff").value = data[i].SetTimeOff;
+                            break;
+                        case 4:
+                            device4_timer.namedItem("check").checked = true;
+                            device4_timer.namedItem("dateStart").value = data[i].DateStart;
+                            device4_timer.namedItem("timeStart").value = data[i].SetTimeOn;
+                            if (data[i].SetTimeOff != "00:00:00")
+                                device4_timer.namedItem("timeOff").value = data[i].SetTimeOff;
+                            break;
+                        default: break;
+                    }
                 }
-                myChart.update();
-            });
+            }
         });
     </script>
 
@@ -613,6 +864,38 @@
             });
         });
     </script>
-</body>
 
-</html>
+    <!-- camera display -->
+    <script>
+        var camera = document.getElementById("camera_input").elements;
+        var camera_display = document.getElementById("showCamera");
+        camera.namedItem("submitBtn").addEventListener("click", camera_url_validation);
+
+        function camera_url_validation() {
+            var url = camera.namedItem("urlCamera").value;
+            if (url != "") {
+                camera_display.setAttribute('src', "../image/loader.gif");
+                setTimeout(function () {
+                    var img = new Image();
+                    img.src = url;
+                    img.onload = function () {
+                        camera_display.setAttribute('src', url);
+                        socket.emit("save_camera_url", { "Room": "bedroom2", "Url": url });
+                    }
+                    img.onerror = function () {
+                        camera_display.setAttribute('src', "../image/no-signal.png");
+                        // alert("invalid");
+                    }
+                }, 3000);
+            }
+        }
+
+        socket.on("camera_url", function (data) {
+            for (let i in data) {
+                if (data[i].Room == "bedroom2") {
+                    camera_display.setAttribute('src', data[i].Url);
+                    camera.namedItem("urlCamera").value = data[i].Url;
+                }
+            }
+        })
+    </script>
