@@ -35,7 +35,7 @@ Theo dõi cảm biến, điều khiển thiết bị
 
 <img src="https://user-images.githubusercontent.com/84682521/143379857-671ab5d5-e4d1-493d-ae99-20765eddce86.jpg" width="90%"></img> 
 
-### 3. Mô hình sản phẩm
+### 3. Mô hình thử nghiệm
 
 <img src="https://user-images.githubusercontent.com/84682521/144887765-ff7a4b3d-3989-433b-9472-2ebcb2bbde0d.jpg" width="45%"></img> <img src="https://user-images.githubusercontent.com/84682521/145568301-bb3e7821-1755-477b-9c7a-99ec1af1edb8.jpg" width="45%"></img> 
 
