@@ -1,6 +1,9 @@
 # mqtt-nodeJs
 Theo dõi cảm biến, điều khiển thiết bị
 
+**VIDEO DEMO: 
+https://www.youtube.com/watch?v=PK6bqEpY30E
+
 ### 1. Giao diện Web (updating...)
 - Chỉnh sửa dựa trên: https://demos.creative-tim.com/soft-ui-dashboard/pages/dashboard.html?_ga=2.14654391.1834153662.1637824728-678885277.1635873874
 
