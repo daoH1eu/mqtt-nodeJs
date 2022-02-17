@@ -10,6 +10,7 @@ var con = mySql.createConnection({
 });
 
 module.exports.con = con;
+module.exports.mySql = mySql;
 
 con.connect(function (err) {
     if (err) throw err;

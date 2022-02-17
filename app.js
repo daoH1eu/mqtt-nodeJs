@@ -1,7 +1,7 @@
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
-const { con } = require('./database');
+const { con, mySql } = require('./database');
 const mqtt = require('mqtt');
 
 const app = express();
@@ -53,7 +53,8 @@ app.get('/log-in', function (req, res) {
 app.post('/log-in', function (req, res) {
     let username = req.body.username;
     let password = req.body.password;
-    let sqlQuery = "select * from accounts where username= '" + username + "' and passwords='" + password + "'";
+    let sqlQuery = "select * from accounts where username= " + mySql.escape(username) + " and passwords=" + mySql.escape(password);
+    console.log(sqlQuery);
     con.query(sqlQuery, function (err, result, fields) {
         if (result.length > 0) {
             req.session.loggedin = true;
